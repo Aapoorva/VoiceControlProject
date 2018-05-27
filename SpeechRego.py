@@ -37,5 +37,5 @@ def get_audio_to_text() :
 	except sr.UnknownValueError :
 	#Audio Can Not be Detected
 		print("Audio is Not Recognizable")
-		return	
+		return
 	return text_frm_audio
