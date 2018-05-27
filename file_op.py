@@ -40,6 +40,11 @@ def delete_folder(folder_name):
 	os.rmdir(folder_name)
 
 
+
+# for creating file:
+def create_file(file_name):
+	f=open(file_name,'w+')
+
 #for getting file path
 def file_path():
 	try :
@@ -130,6 +135,32 @@ def file_path():
 				abs_file_path = os.path.join(script_dir,rel_path)
 				delete_file(abs_file_path)
 		
+			elif "create" in list_text:
+				#get index of file in text
+				index = list_text.index("file")
+				# fetch file name
+				file_name = list_text[index+1]
+						
+
+				if file_name=="":
+					os.system("echo please speak some file name|festival --tts")
+			
+				else:
+					if "folder" in list_text:
+						index_folder = list_text.index("folder")
+						folder_name = list_text[index_folder+1]
+					else:
+						folder_name = "."
+
+				# the final path of file is	
+				script_dir = os.path.dirname(folder_name)
+				rel_path = file_name
+				abs_file_path = os.path.join(script_dir,rel_path)
+				create_file(abs_file_path)
+				
+
+
+
 		elif "folder" in list_text:
 			folder_name = list_text[list_text.index("folder")+1]
 			delete_folder(folder_name)
