@@ -1,4 +1,3 @@
-My version
 This project is built on Ubuntu 16.04
 Language used is python3
 
