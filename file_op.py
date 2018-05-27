@@ -31,6 +31,13 @@ def copy_file(source_file,dest_file):
 	df.write(data)
 	df.close()
 
+# for deleting specific file
+def delete_file(file_name):
+	os.remove(file_name)	
+
+# for deleting folder
+def delete_folder(folder_name):
+	os.rmdir(folder_name)
 
 
 #for getting file path
@@ -72,8 +79,7 @@ def file_path():
 					index = list_text.index("file")
 					file2 = list_text[index+1]
 					list_text.remove("file") 
-					print(list_text)		
-			
+
 					#check if input files are correct				
 					if file1=="" or file2=="":
 						os.system("echo please check file names something is missing|festival --tts")
@@ -92,7 +98,6 @@ def file_path():
 						else:
 							folder2 = "."
 			
-					print(list_text)
 					script_dir1 = os.path.dirname(folder1)
 					rel_path1 = file1
 					source_file = os.path.join(script_dir1,rel_path1)
@@ -100,9 +105,36 @@ def file_path():
 					rel_path2 = file2
 					dest_file = os.path.join(script_dir2,rel_path2)
 					copy_file(source_file,dest_file)
-		
+			
+			elif "delete" in list_text:
+				#get index of file in text
+				index = list_text.index("file")
+				# fetch file name
+				file_name = list_text[index+1]
+						
 
+
+				if file_name=="":
+					os.system("echo please speak some file name|festival --tts")
+			
+				else:
+					if "folder" in list_text:
+						index_folder = list_text.index("folder")
+						folder_name = list_text[index_folder+1]
+					else:
+						folder_name = "."
+
+				# the final path of file is	
+				script_dir = os.path.dirname(folder_name)
+				rel_path = file_name
+				abs_file_path = os.path.join(script_dir,rel_path)
+				delete_file(abs_file_path)
+		
+		elif "folder" in list_text:
+			folder_name = list_text[list_text.index("folder")+1]
+			delete_folder(folder_name)
 	
+
 		else:
 			print("No operation regarding file can be done!! sorry check ur input text !!")
 
