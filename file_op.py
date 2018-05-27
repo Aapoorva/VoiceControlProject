@@ -9,6 +9,7 @@ print(list_text)
 abs_file_path = ""
 path = ""
 
+# for opening file
 def open_file(path):
 	#open the desired file
 	f=open(path,'r')
@@ -20,6 +21,19 @@ def open_file(path):
 		os.system("gedit "+path)
 	f.close()
 
+
+#for copying file
+def copy_file(source_file,dest_file):
+	sf = open(source_file,'r')
+	data = sf.read()
+	sf.close()
+	df = open(dest_file,'w')
+	df.write(data)
+	df.close()
+
+
+
+#for getting file path
 def file_path():
 	try :
 		if "file" in list_text:
@@ -29,8 +43,12 @@ def file_path():
 				index = list_text.index("file")
 				# fetch file name
 				file_name = list_text[index+1]
+						
+
+
 				if file_name=="":
 					os.system("echo please speak some file name|festival --tts")
+			
 				else:
 					if "folder" in list_text:
 						index_folder = list_text.index("folder")
@@ -38,14 +56,50 @@ def file_path():
 					else:
 						folder_name = "."
 
-			# the final path of file is	
-			''''path = str(folder_name+"/"+file_name)
-			print(path)
-			open_file()'''
-			script_dir = os.path.dirname(folder_name)
-			rel_path = file_name
-			abs_file_path = os.path.join(script_dir,rel_path)
-			open_file(abs_file_path)
+				# the final path of file is	
+				script_dir = os.path.dirname(folder_name)
+				rel_path = file_name
+				abs_file_path = os.path.join(script_dir,rel_path)
+				open_file(abs_file_path)
+		
+			
+			elif "copy" in list_text:
+					#get 1st file name
+					index = list_text.index("file")
+					file1 = list_text[index+1]
+					list_text.remove("file")
+					#get 2nd file name
+					index = list_text.index("file")
+					file2 = list_text[index+1]
+					list_text.remove("file") 
+					print(list_text)		
+			
+					#check if input files are correct				
+					if file1=="" or file2=="":
+						os.system("echo please check file names something is missing|festival --tts")
+					else:
+						if "folder" in list_text:
+							index = list_text.index("folder")
+							folder1 = list_text[index+1]
+							list_text.remove("folder")
+						
+						else:
+							folder1 = "."
+						if "folder" in list_text:
+							index = list_text.index("folder")
+							folder2 = list_file[index+1]
+							list_text.remove("folder")
+						else:
+							folder2 = "."
+			
+					print(list_text)
+					script_dir1 = os.path.dirname(folder1)
+					rel_path1 = file1
+					source_file = os.path.join(script_dir1,rel_path1)
+					script_dir2 = os.path.dirname(folder2)
+					rel_path2 = file2
+					dest_file = os.path.join(script_dir2,rel_path2)
+					copy_file(source_file,dest_file)
 		
 
 	
