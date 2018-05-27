@@ -17,6 +17,7 @@ if user_query != None :
 		cmd_output = sp.run([user_query],check=True,shell=True,stdout=sp.PIPE,)
 	except  sp.CalledProcessError :
 		print("CalledProcessError")
+		exit()
 
 	if cmd_output != None :
 
