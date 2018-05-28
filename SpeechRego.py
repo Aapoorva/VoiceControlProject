@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+
+#this module is to recognize speech and convert to text
+
 #to recognize speech using Api or speech engine
 import speech_recognition as sr
 #to commuticate to microphone install pyaudio

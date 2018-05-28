@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
+
+#this is main file to start project
+
 import SpeechRego as sr
 import tts 
 import subprocess as sp
+import installModule as im
 
 # program exit keywords
 exit_keyword = ['quit','exit','cancel','close']
@@ -31,6 +35,7 @@ def process_user_query() :
 				#asking for next query
 				tts.speak("askNext")
 
+# to filter query and call related function
 def filter_query_trigger(user_query) :
 	#tokenizing user query
 	filtered_query = user_query.strip().split()
@@ -40,8 +45,12 @@ def filter_query_trigger(user_query) :
 		pass
 		# execute_file_query(filtered_query)
 
+	if "directory" in filtered_query :
+		pass
+		# execute_directory_query(filtered_query)
+
 	elif "install" in filtered_query :
-		execute_install_query(filtered_query)
+		im.execute_install_query(filtered_query)
 
 	elif "service" in filtered_query :
 		pass
@@ -50,42 +59,5 @@ def filter_query_trigger(user_query) :
 		pass
 		# execute_basic_cmd(filtered_query)
 
-
-#to install a service or python library related query
-def execute_install_query(filtered_query) :
-
-	#filtering python library query
-	if "python" in filtered_query :
-		indx = filtered_query.index('library')
-		library_name = filtered_query[indx + 1]
-		#install library
-		cmd_output = execute_cmd('pip3 install '+library_name)
-		if cmd_output.returncode != 0 :
-			tts.convert_text_n_speak("Sorry Library Not Found")
-		else :
-			tts.convert_text_n_speak("Installed " + library_name + " Library")
-	
-	#installing ubuntu packages
-	else :
-		indx = filtered_query.index('install')
-		pckg_name = filtered_query[indx + 1]
-		#install library
-		cmd_output = execute_cmd('apt install '+pckg_name)
-		if cmd_output.returncode != 0 :
-			tts.convert_text_n_speak("Unable to install service")
-		else :
-			tts.convert_text_n_speak("Installed " + pckg_name + " Library")
-
-#to execute a command
-def execute_cmd(cmd) :
-	cmd_output = ""
-	try :
-		#executing command
-		cmd_output = sp.run([cmd],shell=True,stdout=sp.PIPE,stderr=sp.PIPE)
-	except sp.CalledProcessError :
-		print(cmd,"Command Not Found")
-		exit()
-
-	return cmd_output
-
+#calling function to start code
 process_user_query()
