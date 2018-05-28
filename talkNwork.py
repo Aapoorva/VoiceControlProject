@@ -5,6 +5,7 @@ import subprocess as sp
 import urllib.request
 import urllib.parse
 import re
+import youtube_play
 import webbrowser
 
 #intro message
@@ -24,21 +25,8 @@ while True:
 		if user_query in exit_keyword :
 			tts.convert_text_n_speak('exiting')
 			break;
-		elif user_query.find('youtube')>=0 or user_query.find('play')>=0 or user_query.find('video')>=0:
-
-			video_keywords = user_query.split(' ')
-			final_key = []
-			remv_keywords = ['Youtube','youtube','from','of','for','video','play','Play','Video','For','Of']
-			for word in video_keywords:
-				if word.lower() in remv_keywords:
-					pass
-				else:
-					final_key.append(word)
-			query_string = urllib.parse.urlencode({"search_query" : final_key[0]})
-			html_content = urllib.request.urlopen("http://www.youtube.com/results?" + query_string)
-			search_results = re.findall(r'href=\"\/watch\?v=(.{11})', html_content.read().decode())
-			webbrowser.open_new_tab("http://www.youtube.com/watch?v=" + search_results[0])
-
+		elif user_query.find('youtube')>=0 or user_query.find('play')>=0 or user_query.find('video')>=0 or user_query.find('Youtube'):
+			youtube_play.play_youtube(user_query)
 		else :
 			cmd_output = ""
 			try :
