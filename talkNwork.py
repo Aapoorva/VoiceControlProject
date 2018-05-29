@@ -8,6 +8,7 @@ import subprocess as sp
 import youtube_play as yp
 import installModule as im
 import file_operations as fo
+import execute_commands as ec
 
 # program exit keywords
 exit_keyword = ['quit','exit','cancel','close']
@@ -58,6 +59,9 @@ def filter_query_trigger(user_query) :
 		# execute_system_query(filtered_query)
 	elif filtered_query.find('youtube')>=0 or filtered_query.find('play')>=0 or filtered_query.find('video')>=0 or filtered_query.find('Youtube'):
 		yp.play_youtube(user_query)
+	
+	elif user_query.find('command')>=0 or user_query.find('directory')>=0 or user_query.find('file')>=0 :
+		ec.execute_commands(user_query)
 	else :
 		pass
 		# execute_basic_cmd(filtered_query)
