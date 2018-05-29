@@ -15,21 +15,14 @@ operation = 0
 
 #to get path
 def path(operation,file_names,folder):
-	#list_folder = []
-	'''if operation == 6:
-		list_folder = folder.split()
-		del list_folder[-1]
-		folder = "".join(list_folder)
-		print(folder)
-	else:
-		pass'''
+	
 	script_dir = os.path.dirname(folder)
 	if file_names == []:
 		rel_path=""
 	else:
 		rel_path = file_names[0]
 	abs_file_path = os.path.join(script_dir,rel_path)
-	print(abs_file_path)
+
 	if operation==1:
 		open_file(abs_file_path)
 	elif operation == 2:
@@ -73,9 +66,7 @@ def rename_file(folder,file1,file2):
 
 #for listing files of a folder
 def list_files(folder_name):
-	os.system("cd "+folder_name+"|ls -l")
-	#os.system("ls -l")
-
+	os.system("cd "+folder_name+";ls -l")
 
 #main trigger function
 def call_file(list_text):
@@ -118,8 +109,7 @@ def call_file(list_text):
 				index = list_text.index("home")
 				list_text.remove(list_text[index-1])
 				list_text.remove("home")
-				#list_text.remove(list_text[index-1])
-				print(list_text)
+			
 
 
 		elif i=="to":
@@ -183,27 +173,4 @@ call()
 
 
 
-'''
-elif i=="rename":
-			if "current" in list_text:
-				folder = "."
 
-			elif "home" in list_text:
-				folder = "~"+folder
-				index = list_text.index("home")
-				del list_text[index-1]
-			else:		
-				index1 = list_text.index(i)
-				folder = list_text[index1+2]+"/"+folder
-				list_text.remove(i)	'''
-
-
-
-
-'''
-elif "home" in list_text:
-				#folder = "~"
-				if home == 1:
-					pass
-				else:
-					home = 1  '''
