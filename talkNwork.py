@@ -5,7 +5,9 @@
 import SpeechRego as sr
 import tts 
 import subprocess as sp
+import youtube_play as yp
 import installModule as im
+import file_operations as fo
 
 # program exit keywords
 exit_keyword = ['quit','exit','cancel','close']
@@ -42,10 +44,9 @@ def filter_query_trigger(user_query) :
 
 	#calling function for respective query
 	if "file" in filtered_query :
-		pass
-		# execute_file_query(filtered_query)
+		fo.call_file(filtered_query)
 
-	if "directory" in filtered_query :
+	elif "directory" in filtered_query :
 		pass
 		# execute_directory_query(filtered_query)
 
@@ -55,6 +56,8 @@ def filter_query_trigger(user_query) :
 	elif "service" in filtered_query :
 		pass
 		# execute_system_query(filtered_query)
+	elif filtered_query.find('youtube')>=0 or filtered_query.find('play')>=0 or filtered_query.find('video')>=0 or filtered_query.find('Youtube'):
+		yp.play_youtube(user_query)
 	else :
 		pass
 		# execute_basic_cmd(filtered_query)
