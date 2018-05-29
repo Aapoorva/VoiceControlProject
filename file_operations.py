@@ -1,17 +1,11 @@
 #!/usr/bin/python3
-
 import os
 import os.path
-import speech_recognition as sr
-import pyaudio
-from gtts import gTTS
-import tts 
-
+import tts
+import SpeechRego as sr
 
 global operation
 operation = 0
-
-#tts.call()
 
 #to get path
 def path(operation,file_names,folder):
@@ -34,25 +28,25 @@ def path(operation,file_names,folder):
 	elif operation == 6:
 		list_files(script_dir)
 
-# taking input
-def call():
-	text = input("Enter the text\n")
-	list_text = text.strip().split()
-	call_file(list_text)	
-
 #open file
 def open_file(path):
 	os.system("gedit "+path)
+	tts.convert_text_n_speak("File opened")
 
 #create file
 def create_file(path):
 	f=open(path,'a')
 	os.system("gedit "+path)
+	tts.convert_text_n_speak("File Created")
 
 #delete file
 def delete_file(path):
-	os.remove(path)
-
+	tts.convert_text_n_speak("Are you sure ? ")
+	user_input = sr.get_audio_to_text()
+	if user_input.find("yes") != -1 :
+		os.remove(path)
+	else :
+		tts.convert_text_n_speak("Aage se dhyan rakhna")
 
 # renaming file
 def rename_file(folder,file1,file2):
@@ -110,8 +104,6 @@ def call_file(list_text):
 				list_text.remove(list_text[index-1])
 				list_text.remove("home")
 			
-
-
 		elif i=="to":
 			folders.append(folder)
 
@@ -155,22 +147,3 @@ def call_file(list_text):
 			path(5,file_names,folders)
 		elif i=="list":
 			path(6,[],folder)
-
-call()	
-	 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
