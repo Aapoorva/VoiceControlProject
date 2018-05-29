@@ -2,6 +2,7 @@
 import SpeechRego as sr
 import tts
 import subprocess as sp
+import execute_commands
 
 #intro message
 tts.convert_text_n_speak("Welcome")
@@ -13,15 +14,16 @@ while True:
 
 	# program exit keywords
 	exit_keyword = ['quit','exit','cancel','close']
-	
+
 	#checking query is empty or not
 	if user_query != None :
 		# if query has exit keywords, close the application
 		if user_query in exit_keyword :
 			tts.convert_text_n_speak('exiting')
 			break;
-		# else execute the command
-		else :
+		elif user_query.find('command')>=0 or user_query.find('directory')>=0 or user_query.find('file')>=0 :
+			execute_commands.execute_commands(user_query):
+		else:
 			cmd_output = ""
 			try :
 				#executing command
@@ -36,6 +38,6 @@ while True:
 					print(user_query,"Command Not Found")
 				else :
 					print(cmd_output.stdout.decode())
-	
+
 	#asking for next query
 	tts.convert_text_n_speak('What else do you want ?')
