@@ -17,12 +17,12 @@ while True:
 	user_query = sr.get_audio_to_text()
 
 	# program exit keywords
-	exit_keyword = ['quit','exit','cancel','close']
+	exit_keyword = ['quit','exit','cancel','close','nothing']
 
 	#checking query is empty or not
 	if user_query != None :
 		# if query has exit keywords, close the application
-		if user_query in exit_keyword :
+		if user_query in exit_keyword:
 			tts.convert_text_n_speak('exiting')
 			break;
 		elif user_query.find('youtube')>=0 or user_query.find('play')>=0 or user_query.find('video')>=0 or user_query.find('Youtube'):
