@@ -5,13 +5,13 @@ import re
 import webbrowser
 
 # argument user_query from talkwork.py
-def play_youtube(user_query):
+def play_youtube(filtered_query):
     # split user_query to words
-    video_keywords = user_query.split(' ')
+    video_keywords = filtered_query
     # final keywords to search
     final_key = []
     # keywords that won't be used for searching
-    remv_keywords = ['Youtube','youtube','from','of','for','video','play','Play','Video','For','Of']
+    remv_keywords = ['youtube','from','of','for','video','play']
 
     # appending keyword to final_key list rejecting remv_keywords
     for word in video_keywords:
@@ -30,4 +30,4 @@ def play_youtube(user_query):
     search_results = re.findall(r'href=\"\/watch\?v=(.{11})', html_content.read().decode())
     # open link in tab webbrowser
     webbrowser.open_new_tab("http://www.youtube.com/watch?v=" + search_results[0])
-    return
+    # return
