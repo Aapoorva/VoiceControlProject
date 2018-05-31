@@ -6,8 +6,7 @@ import SpeechRego as sr
 #from gtts import gTTS
 import tts  
 import copy_op
-import subprocess as sp
-import get_file 
+import subprocess as sp 
 
 global operation
 operation = 0
@@ -221,4 +220,4 @@ def call_file(list_text,new_list,file_names,valid_file_op):
 	except IOError:
 		tts.convert_text_n_speak("something might be missing or maybe you don't have appropriate permissions please check your input once")
 
-call()
+#call()
