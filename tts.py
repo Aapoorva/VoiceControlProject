@@ -2,17 +2,21 @@
 
 #this module is to convert text to speech
 
+import gtts
 from gtts import gTTS
 import os
 
 #to convert text to speech
 def convert_text_n_speak(textInput) :
-	#converting text
-	tts = gTTS(text=textInput, lang='en')
-	#saving audio to file
-	tts.save("query.wav")
-	#playing audio
-	os.system("mpg321 query.wav")
+	try :
+		#converting text
+		tts = gTTS(text=textInput, lang='en')
+		#saving audio to file
+		tts.save("query.wav")
+		#playing audio
+		os.system("mpg321 query.wav")
+	except gtts.tts.gTTSError :
+		print("Please Check Internet Connection")
 
 #to play existing audio file
 def speak(msg) :

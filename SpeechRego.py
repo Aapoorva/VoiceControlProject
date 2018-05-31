@@ -6,6 +6,8 @@
 import speech_recognition as sr
 #to commuticate to microphone install pyaudio
 
+
+import tts
 #recognizer instance
 r=sr.Recognizer()
 
@@ -32,13 +34,18 @@ def get_audio_to_text() :
 	#using google web speech api - requires internet conn./
 	try :
 		text_frm_audio = r.recognize_google(audio)
-		print("You said : ",r.recognize_google(audio))
+		print("You said : ",text_frm_audio)
 	except sr.RequestError :
 	#Api Unreachable
-		print("API Unavailable")
+		tts.convert_text_n_speak("Please Check internet Connection")
 		return
 	except sr.UnknownValueError :
 	#Audio Can Not be Detected
-		print("Audio is Not Recognizable")
-		return
+		tts.convert_text_n_speak("Audio is Not Recognizable")
+
+	if text_frm_audio == "" or text_frm_audio == None :
+		text_frm_audio = get_audio_to_text()
+
 	return text_frm_audio
+
+#get_audio_to_text()

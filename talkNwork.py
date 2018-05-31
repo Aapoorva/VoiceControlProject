@@ -9,12 +9,15 @@ import subprocess as sp
 import youtube_play as yp
 import installModule as im
 import file_operations as fo
+import execute_commands as ec
+import directory_op as do
 
 # program exit keywords
 exit_keyword = ['quit','exit','cancel','close']
 
 #intro message
 tts.speak("welcome")
+
 tts.speak("ask")
 
 def process_user_query() :
@@ -46,9 +49,8 @@ def filter_query_trigger(user_query) :
 	if "file" in filtered_query :
 		fo.call_file(filtered_query)
 
-	elif "directory" in filtered_query :
-		pass
-		# execute_directory_query(filtered_query)
+	elif "directory" in filtered_query or "folder" in filtered_query:
+		do.execute_directory_query(filtered_query)
 
 	elif "install" in filtered_query :
 		im.execute_install_query(filtered_query)
@@ -56,11 +58,14 @@ def filter_query_trigger(user_query) :
 	elif "service" in filtered_query :
 		pass
 		# execute_system_query(filtered_query)
-	elif filtered_query.find('youtube')>=0 or filtered_query.find('play')>=0 or filtered_query.find('video')>=0 or filtered_query.find('Youtube'):
-		yp.play_youtube(user_query)
+	elif "youtube" in filtered_query or "play" in filtered_query or "video" in filtered_query:
+		yp.play_youtube(filtered_query)
+	
+	# elif "command" in filtered_query or "directory" in filtered_query or "file" in filtered_query :
+	# 	ec.execute_commands(filtered_query)
 	else :
-		pass
-		# execute_basic_cmd(filtered_query)
+		#executing a command like date, cal, check internet
+		ec.execute_commands(filtered_query)
 
 #calling function to start code
 
