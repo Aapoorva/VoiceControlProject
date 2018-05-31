@@ -10,6 +10,7 @@ def execute_install_query(filtered_query) :
 
 	#filtering python library query
 	if "python" in filtered_query :
+		print("Installing")
 		indx = filtered_query.index('library')
 		library_name = filtered_query[indx + 1]
 		#install library
@@ -24,7 +25,8 @@ def execute_install_query(filtered_query) :
 		indx = filtered_query.index('install')
 		pckg_name = filtered_query[indx + 1]
 		#install library
-		cmd_output = ce.execute_cmd('apt install '+pckg_name)
+		tts.convert_text_n_speak("Please Enter Password")
+		cmd_output = ce.execute_cmd('sudo apt install '+pckg_name)
 		if cmd_output.returncode != 0 :
 			tts.convert_text_n_speak("Unable to install service")
 		else :
