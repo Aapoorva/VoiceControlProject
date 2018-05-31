@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 import os
 import os.path
 import SpeechRego as sr
@@ -12,8 +11,6 @@ import get_file
 
 global operation
 operation = 0
-
-#tts.call()
 
 #to get path
 def path(operation,file_names,folder):
@@ -112,13 +109,13 @@ def call_file(list_text,new_list,file_names,valid_file_op):
 	current = 0
 	c = 0
 	list_text1 = ""
-	
+
 	try:
 		if new_list == 1:
 			new_list = 0
-		
+	
 		for i in list_text:
-			
+
 			count+=1
 			if i=="open"  or i=="create" or i=="close" or i=="delete" or i=="rename" or i=="list":
 				index = list_text.index(i)
