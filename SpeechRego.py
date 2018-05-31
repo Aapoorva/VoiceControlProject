@@ -4,6 +4,7 @@
 
 #to recognize speech using Api or speech engine
 import speech_recognition as sr
+import tts
 #to commuticate to microphone install pyaudio
 
 
