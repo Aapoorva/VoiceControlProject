@@ -9,7 +9,7 @@ import youtube_play as yp
 import installModule as im
 import file_operations as fo
 import execute_commands as ec
-import directory_op as do
+#import directory_op as do
 
 # program exit keywords
 exit_keyword = ['quit','exit','cancel','close']
