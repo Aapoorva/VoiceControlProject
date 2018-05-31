@@ -5,8 +5,12 @@ Python libraries required are -
      LIBRARY				COMMAND
 1.SpeechRegnition	-   pip3 install SpeechRecognition
 2.pyAudio 		 	-   sudo apt-get install python-pyaudio python3-pyaudio
-
+3. webbrowser
+4. os
+5. gtts
+6. subprocess
+7. urllib
 
 Hardware Requirements are -
-1.Microphone
-2.Speakers
+1. Microphone
+2. Speakers
