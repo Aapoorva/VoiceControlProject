@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #to recognize speech using Api or speech engine
 import speech_recognition as sr
+import tts
 #to commuticate to microphone install pyaudio
 
 #recognizer instance
@@ -33,9 +34,15 @@ def get_audio_to_text() :
 	except sr.RequestError :
 	#Api Unreachable
 		print("API Unavailable")
-		return
+		tts.convert_text_n_speak("Please Check Internet Connection")
 	except sr.UnknownValueError :
 	#Audio Can Not be Detected
 		print("Audio is Not Recognizable")
-		return
+		tts.convert_text_n_speak("Audio is Not Recognizable")
+	#checking text to audio is None or not
+	if text_frm_audio == "" :
+		text_frm_audio = get_audio_to_text()
+	print(text_frm_audio)
 	return text_frm_audio
+
+#get_audio_to_text()

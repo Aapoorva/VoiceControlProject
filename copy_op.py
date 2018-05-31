@@ -52,7 +52,6 @@ def call_copy(list_text):
 			if i == "file":
 				files.append(list_text[list_text.index(i)+1])
 				list_text.remove("file")
-				print(list_text)
 			
 			# dividing list in 2 parts
 			elif i == "to" or "into":
@@ -122,8 +121,8 @@ def call_copy(list_text):
 				folder2="/"+folder2
 		
 		folders.append(folder2)
-		print(files)
-		print(folders)
+		
+		# get path of source and destination files
 		path(files,folders)
 
 		
@@ -131,7 +130,7 @@ def call_copy(list_text):
 	except IOError:
 		print("invalid input")
 
-take_in()
+#take_in()
 
 
 
