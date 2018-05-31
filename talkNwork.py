@@ -11,7 +11,10 @@ import installModule as im
 import file_operations as fo
 import execute_commands as ec
 #import directory_op as do
+<<<<<<< HEAD
 import google_search as gs
+=======
+>>>>>>> apoorva
 
 # program exit keywords
 exit_keyword = ['quit','exit','cancel','close']
@@ -48,11 +51,11 @@ def filter_query_trigger(user_query) :
 
 	#calling function for respective query
 	if "file" in filtered_query :
-		fo.call_file(filtered_query)
+		fo.call(filtered_query)
 
 	elif "directory" in filtered_query or "folder" in filtered_query:
-		#do.execute_directory_query(filtered_query)
-		pass
+		tts.convert_text_n_speak("Sorry but Directory module is in Under Development")
+		# do.execute_directory_query(filtered_query)
 
 	elif "install" in filtered_query :
 		im.execute_install_query(filtered_query)
