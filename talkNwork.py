@@ -4,13 +4,14 @@
 #this is main file to start project
 
 import SpeechRego as sr
-import tts 
+import tts
 import subprocess as sp
 import youtube_play as yp
 import installModule as im
 import file_operations as fo
 import execute_commands as ec
-import directory_op as do
+#import directory_op as do
+import google_search as gs
 
 # program exit keywords
 exit_keyword = ['quit','exit','cancel','close']
@@ -31,7 +32,7 @@ def process_user_query() :
 			user_query = user_query.lower()
 
 			# if query has exit keywords, close the application
-			if user_query in exit_keyword :
+			if exit_keyword[0] in user_query or exit_keyword[1] in user_query or exit_keyword[3] in user_query:
 				tts.speak("exit")
 				break;
 			# else execute the command
@@ -50,7 +51,8 @@ def filter_query_trigger(user_query) :
 		fo.call_file(filtered_query)
 
 	elif "directory" in filtered_query or "folder" in filtered_query:
-		do.execute_directory_query(filtered_query)
+		#do.execute_directory_query(filtered_query)
+		pass
 
 	elif "install" in filtered_query :
 		im.execute_install_query(filtered_query)
@@ -60,9 +62,13 @@ def filter_query_trigger(user_query) :
 		# execute_system_query(filtered_query)
 	elif "youtube" in filtered_query or "play" in filtered_query or "video" in filtered_query:
 		yp.play_youtube(filtered_query)
-	
+	# search the words on google
+	elif "search" in filtered_query or "google" in filtered_query:
+		gs.search_google(filtered_query)
+
 	# elif "command" in filtered_query or "directory" in filtered_query or "file" in filtered_query :
 	# 	ec.execute_commands(filtered_query)
+
 	else :
 		#executing a command like date, cal, check internet
 		ec.execute_commands(filtered_query)
@@ -70,4 +76,3 @@ def filter_query_trigger(user_query) :
 #calling function to start code
 
 process_user_query()
-
