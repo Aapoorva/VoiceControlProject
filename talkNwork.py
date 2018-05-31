@@ -4,7 +4,7 @@
 #this is main file to start project
 
 import SpeechRego as sr
-import tts
+import tts 
 import subprocess as sp
 import youtube_play as yp
 import installModule as im
@@ -31,7 +31,6 @@ def process_user_query() :
 			if user_query in exit_keyword :
 				tts.speak("exit")
 				break;
-
 			# else execute the command
 			else :
 				filter_query_trigger(user_query)
@@ -64,4 +63,6 @@ def filter_query_trigger(user_query) :
 		# execute_basic_cmd(filtered_query)
 
 #calling function to start code
+
 process_user_query()
+
