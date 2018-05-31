@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 
 #this is main file to start project
@@ -11,10 +10,7 @@ import installModule as im
 import file_operations as fo
 import execute_commands as ec
 #import directory_op as do
-<<<<<<< HEAD
 import google_search as gs
-=======
->>>>>>> apoorva
 
 # program exit keywords
 exit_keyword = ['quit','exit','cancel','close']

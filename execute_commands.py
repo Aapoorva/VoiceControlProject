@@ -4,6 +4,7 @@ import mysql.connector as mariadb
 import json
 import subprocess
 import time
+import tts
 
 # #Input from user via mic
 # user_input=input("Enter your command:")
@@ -17,8 +18,6 @@ def execute_commands(filtered_query) :
         #creating a cursor object
         cursorObject=connectionObject.cursor()
 
-        print("Query : ",filtered_query)
-
         #creating list after removing inappropriate words
         for my_val in filtered_query:
             if my_val not in invalid_words:
@@ -26,7 +25,6 @@ def execute_commands(filtered_query) :
 
         #converting list to string
         insplit_str=' '.join(insplit)
-        print(insplit_str)
         #to check whether user has given the command for creating a directory or file
         if(insplit_str.startswith('make') | insplit_str.startswith('create')):
             pass
@@ -52,15 +50,15 @@ def execute_commands(filtered_query) :
             #     print(out.decode())
 
         # elif(insplit_str.startswith('remove') | insplit_str.startswith('delete')):
-        #     if('directory' in insplit_str):
-        #         path=insplit_str.split()
-        #         pathvar=path[2:]
-        #         str='/'.join(pathvar)
-        #         command="rm -rvf /"+str
-        #         #print(command)
-        #         proc = subprocess.Popen([command], stdout=subprocess.PIPE, shell=True)
-        #         (out, err) = proc.communicate()
-        #         print(out.decode())
+            # if('directory' in insplit_str):
+            #     path=insplit_str.split()
+            #     pathvar=path[2:]
+            #     str='/'.join(pathvar)
+            #     command="rm -rvf /"+str
+            #     #print(command)
+            #     proc = subprocess.Popen([command], stdout=subprocess.PIPE, shell=True)
+            #     (out, err) = proc.communicate()
+            #     print(out.decode())
 
         #     elif('file' in insplit_str):
         #         path=insplit_str.split()
@@ -85,32 +83,36 @@ def execute_commands(filtered_query) :
             time.sleep(5)
 
         else:
-
             #SQL Query
             var='"'+insplit_str+'"'
-            print(var)
             sqlQuery="select command from commands1 where user_input="+var
             #print(sqlQuery)
 
             #executing sql query
             cursorObject.execute(sqlQuery)
 
-            #fetching data from sql
+            #fetching data from sql - returning list
             rows=cursorObject.fetchall()
-            print(rows)
-            dict=rows[0]
-            inp=rows[0][0]
-            #os.system(inp)
-            # s=''.join(val)
-            proc = subprocess.Popen([inp], stdout=subprocess.PIPE, shell=True)
-            (out, err) = proc.communicate()
-            print(out.decode())
-            time.sleep(5)
-            #print(var12)
+            # checking query fetched or not
+            if len(rows) != 0 :
+                #fetching command
+                print("fetching commands")
+                inp=rows[0][0]
+                #os.system(inp)
+                # s=''.join(val)
+                proc = subprocess.Popen([inp], stdout=subprocess.PIPE, shell=True)
+                (out, err) = proc.communicate()
+                print(out.decode())
+                time.sleep(5)
+                #print(var12)
+            else :
+                tts.convert_text_n_speak("Sorry your query is incomplete PLEASE CHECK")
+                time.sleep(5)
+                return
 
-    # except Exception as e:
-    #     #Exception Caught
-    #     print("Exception Occured ",e)
+    except Exception as e:
+        #Exception Caught
+        print("Exception Occured ",e)
 
     finally:
         #CLosing the connection
