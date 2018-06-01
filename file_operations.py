@@ -45,13 +45,13 @@ def path(operation,file_names,folder):
 			tts.convert_text_n_speak("Sorry file not found")
 
 # taking input
-def call(list_text):
-#def call():
+#def call(list_text):
+def call():
 	new_list = 0
 	file_names = []
 	valid_file_op = []
-	#text = input("Enter the text\n")
-	#list_text = text.strip().split()
+	text = input("Enter the text\n")
+	list_text = text.strip().split()
 	call_file(list_text,new_list,file_names,valid_file_op)	
 
 #open file
@@ -118,10 +118,14 @@ def call_file(list_text,new_list,file_names,valid_file_op):
 			count+=1
 			if i=="open"  or i=="create" or i=="close" or i=="delete" or i=="rename" or i=="list":
 				index = list_text.index(i)
-				valid_file_op.append(i)
+				if i in valid_file_op:
+					pass
+				else:
+					valid_file_op.append(i)
 				del i				
 
 			elif i=="copy":
+				list_text.remove("copy")
 				copy_op.call_copy(list_text)
 
 			elif i=="file":
@@ -208,6 +212,12 @@ def call_file(list_text,new_list,file_names,valid_file_op):
 				path(3,file_names,folder)
 				
 			elif i == "rename":
+				if len(file_names) == 1:
+					tts.convert_text_n_speak("what do u want to be the new name of ur file")
+					file_name = sr.get_audio_to_text()
+					file_names.append(file_name)
+				else:
+					pass
 				path(4,file_names,folder)
 	
 			elif i == "copy":
@@ -220,4 +230,4 @@ def call_file(list_text,new_list,file_names,valid_file_op):
 	except IOError:
 		tts.convert_text_n_speak("something might be missing or maybe you don't have appropriate permissions please check your input once")
 
-#call()
+call()

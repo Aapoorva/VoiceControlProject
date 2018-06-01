@@ -2,6 +2,9 @@
 
 import os
 import os.path
+import subprocess as sp
+import tts
+import SpeechRego as sr
 
 
 def take_in():
@@ -28,7 +31,7 @@ def path(files,folders):
 	source_path = os.path.join(script_dir1,rel_path1)
 
 	script_dir2 = os.path.dirname(folders[1])
-	rel_path2 = files[1]
+	rel_path2 = files[0]
 	dest_path = os.path.join(script_dir2,rel_path2)
 
 	# call copy function
@@ -44,14 +47,37 @@ def call_copy(list_text):
 	dest = []
 	folder1 = ""
 	folder2 =""
-	entered = 0
+	current = 0
 	entered_to = 0
 	entered = 0
 	try:
 		for i in list_text:
 			if i == "file":
-				files.append(list_text[list_text.index(i)+1])
+				index = list_text.index("file")
+				if list_text[-1]=="file":
+					#file_name = input("enter file name\n")
+				 	tts.convert_text_n_speak("what is the file name")
+					file_name = sr.get_audio.to_text()
+					files.append(file_name)
+				else:
+					files.append(list_text[list_text.index(i)+1])
+
 				list_text.remove("file")
+
+				if "from folder" not in list_text and "from directory" not in list_text and "to folder" not in list_text and "to directory" not in list_text:
+					#source1 = input("enter source directory\n")
+					tts.convert_text_n_speak("what is the source directory")
+					source1 = sr.get_audio_to_text()
+					source = source1.strip().split()
+					#dest1 = input("enter destination directory\n")
+					tts.convert_text_n_speak("what is the destination directory")
+					dest1 = sr.get_audio_to_text()
+					dest = dest1.strip().split()
+					
+									
+				else:
+					pass
+
 			
 			# dividing list in 2 parts
 			elif i == "to" or "into":
@@ -68,67 +94,74 @@ def call_copy(list_text):
 					del i
 					entered_to =1
 		
-
 		# for source folder
 		for i in source:
-			if  i=="in" or i=="of" or i=="from":
+			if i == "folder" or i == "directory":
 				index1 = source.index(i)
-				if source[index1+1]=="home":
+				if source[index1-1]=="home":
 					entered = 1
 					del i
-				elif source[index1+1]=="current":
+				elif source[index1-1]=="current":
 					current = 1
 					del i
 				else :
-					folder1 = source[index1+2]+"/"+folder1
+					folder1 = source[index1+1]+"/"+folder1
 					source.remove(i)			
 
 		if current == 1:
 			folder1="./"+folder1
 
+		elif entered == 1:
+			output=sp.run(['echo $USER'],shell=True,stdout=sp.PIPE)
+			user=output.stdout.decode().replace('\n','')
+
+			folder1 = "/home/" + user +"/" + folder1
+
 		else:
-			if entered == 1:
-				folder1 = "/home/bhavyaagrawal/"+folder1
-			else:
-				folder1="/"+folder1
+			folder1="/"+folder1
 		entered = 0
 		current = 0
+
 		folders.append(folder1)
-		
 	
 		# for destination folder
 		for i in dest:
-			if  i=="in" or i=="of" or i=="from":
+			#if  i=="in" or i=="of" or i=="from":
+			if i == "folder" or i == "directory":
 				index1 = dest.index(i)
-				if dest[index1+1]=="home":
+				if dest[index1-1]=="home":
 					entered = 1
 					del i
-				elif dest[index1+1]=="current":
+				elif dest[index1-1]=="current":
 					current = 1
 					del i
 				else :
-					folder2 = dest[index1+2]+"/"+folder2
-					dest.remove(i)			
+					folder2 = dest[index1+1]+"/"+folder2
+					#dest.remove(i)
+					del i			
 
 			
 		if current == 1:
 			folder2="./"+folder2
 
+		elif entered == 1:
+			output=sp.run(['echo $USER'],shell=True,stdout=sp.PIPE)
+			user=output.stdout.decode().replace('\n','')
+
+			folder2 = "/home/" + user +"/" + folder2
+
 		else:
-			if entered == 1:
-				folder2 = "/home/bhavyaagrawal/"+folder2
-			else:
-				folder2="/"+folder2
+			folder2="/"+folder2
 		
-		folders.append(folder2)
-		
+		folders.append(folder2)	
+
 		# get path of source and destination files
 		path(files,folders)
 
 		
 
 	except IOError:
-		print("invalid input")
+		tts.convert_text_n_speak("invalid input")
 
 #take_in()
 
