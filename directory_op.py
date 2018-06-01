@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import tts
-# import SpeechRego as sr
-import textInput as sr
+import SpeechRego as sr
+# import textInput as sr
 import subprocess as sp
 import os.path
 from time import sleep
@@ -285,6 +285,6 @@ def execute_directory_query(filtered_query) :
 		tts.convert_text_n_speak("Sorry your query is incomplete. please check")
 		return
 
-query = input("Directory query : ")
-filtered_query = query.lower().strip().split()
-execute_directory_query(filtered_query)
+# query = input("Directory query : ")
+# filtered_query = query.lower().strip().split()
+# execute_directory_query(filtered_query)

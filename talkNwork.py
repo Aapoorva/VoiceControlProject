@@ -9,7 +9,7 @@ import youtube_play as yp
 import installModule as im
 import file_operations as fo
 import execute_commands as ec
-#import directory_op as do
+import directory_op as do
 
 # program exit keywords
 exit_keyword = ['quit','exit','cancel','close']
@@ -50,8 +50,7 @@ def filter_query_trigger(user_query) :
 		fo.call(filtered_query)
 
 	elif "directory" in filtered_query or "folder" in filtered_query:
-		tts.convert_text_n_speak("Under Development")
-		# do.execute_directory_query(filtered_query)
+		do.execute_directory_query(filtered_query)
 
 	elif "install" in filtered_query :
 		im.execute_install_query(filtered_query)
