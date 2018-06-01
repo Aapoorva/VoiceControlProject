@@ -8,7 +8,7 @@ import SpeechRego as sr
 def search_google(filtered_query):
     result = 0
     # keywords to remove
-    remv_keywords = ['search','google','on','about','the','find','ok']
+    remv_keywords = ['search','google','on','about','the','find','ok','do','a']
     # final list of words to be searched
     final_key=[]
     # append words other than remv_keywords to final_key
