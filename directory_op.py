@@ -8,39 +8,30 @@ import os.path
 from time import sleep
 
 def dir_path(filtered_query) :
-	start_index=-1
-	last_index=
 	path=""
+	split_words=['in','of','under','from']
 
 	#removing folder or directory word in query
 	for word in filtered_query :
 		if word == "folder" or word == "directory" :
 			filtered_query.remove(word)
 
-	#checking directory path given or not
-	if "in" in filtered_query :
-		start_index = filtered_query.index("in")
-	elif "of" in filtered_query :
-		start_index = filtered_query.index("of")
-	elif "under" in filtered_query :	
-		start_index = filtered_query.index("under")
+	#creating path by parsing list from start_index i.e. index of in/of/under
+	for word in filtered_query:
+		if word in split_words :
+			dir_index = filtered_query.index(word)+1
+			if dir_index < len(filtered_query) :
+				dir_name = filtered_query[dir_index]
+				path=dir_name + "/" + path
+
 	#directory path not given
-	else :
+	if path == ""  or path == None :
 		tts.convert_text_n_speak("Please tell directory location")
 		user_input = sr.get_audio_to_text()
 		if user_input != None :
 			user_input_split = user_input.lower().strip().split()
 			#calling function to create path
 			path = dir_path(user_input_split)
-
-	#creating path by parsing list from start_index i.e. index of in/of/under
-	if start_index != -1 :
-		i = start_index+1
-		while i < len(filtered_query) :
-			dir_name = filtered_query[i]
-			path=dir_name + "/" + path
-			#skipping splitter word i.e. in/of/under
-			i=i+2
 
 	return path
 
@@ -62,7 +53,6 @@ def refine_path(path) :
 
 	#checking dir location exixts or not
 	if not os.path.isdir(path) :
-		print(path)
 		tts.convert_text_n_speak("Sorry Location is invalid please check and try again")
 		return
 
@@ -71,8 +61,6 @@ def refine_path(path) :
 	return path
 
 def get_dir_name(filtered_query) :
-
-	print("query : ",filtered_query)
 
 	if len(filtered_query) == 1 :
 		dir_name = filtered_query[0]
@@ -107,20 +95,54 @@ def get_dir_name(filtered_query) :
 
 	return dir_name
 
-def  get_dir_path(filtered_query):
+#to get absolute path
+def  get_dir_path(filtered_query,name_req=1):
 
-	path = dir_path(filtered_query)
+	filtered_query_copy = filtered_query.copy()
+
+	new_dir_name = ""
+	path = dir_path(filtered_query_copy)
 	refined_path = refine_path(path)
 	if refined_path == None or refined_path == "" :
 		return
 
-	#reading directory name
-	new_dir_name = get_dir_name(filtered_query)
+	#checking dir name req or not
+	if name_req == 1 :
+		#reading directory name
+		new_dir_name = get_dir_name(filtered_query)
 
 	#creating absolute path
 	abs_path = refined_path + new_dir_name
 
 	return abs_path
+
+# to get destination path
+def get_dest_path(filtered_query,abs_path) :
+	
+	dir_name_index = -1
+	desti_path = ""
+
+	if len(filtered_query) == 1 :
+		dir_name_index = 0
+
+	elif "to" in filtered_query :
+		dir_name_index = filtered_query.index("to") + 1
+
+
+	if dir_name_index == -1 :
+		tts.convert_text_n_speak("Please Specify new directory name")
+		user_input = sr.get_audio_to_text()
+		if user_input != None :
+			user_input_split = user_input.lower().strip().split()
+			#calling function to create path
+			desti_path = get_dest_path(user_input_split,abs_path)
+
+	else :
+		splash_index = abs_path.rfind('/')
+		desti_path = abs_path[0:splash_index+1] + filtered_query[dir_name_index]
+
+	print(desti_path)
+	return desti_path
 
 # to create dir
 def create_dir(filtered_query) :
@@ -168,21 +190,99 @@ def remove_dir(filtered_query) :
 		tts.convert_text_n_speak("Aage se dhayan rakhna")
 
 
+def listall_dir(filtered_query) :
+	abs_path = get_dir_path(filtered_query,0)
+	
+	#checking directory exists or not
+	if not os.path.isdir(abs_path) :
+		tts.convert_text_n_speak("Please Check Directory Does Not Exists")
+		return
+
+	#creating command
+	create_dir_cmd = 'ls -l ' + abs_path
+	#creating dir
+	out = sp.run([create_dir_cmd],shell=True,stdout=sp.PIPE,stderr=sp.PIPE)
+	if out.returncode == 0 :
+		print(out.stdout.decode())
+		tts.convert_text_n_speak("Directory Content Listed")
+	else :
+		tts.convert_text_n_speak("Unable to list directory content. Please try again later")
+	sleep(10)
+
+def rename_dir(filtered_query) :
+	abs_path = get_dir_path(filtered_query)
+	
+	#checking directory exists or not
+	if not os.path.isdir(abs_path) :
+		tts.convert_text_n_speak("Directory Does Not Exists. Please Check ")
+		return
+
+	desti_path = get_dest_path(filtered_query,abs_path)
+
+	if os.path.isdir(desti_path) :
+		tts.convert_text_n_speak("Directory With same name already exists. Please Check ")
+		return
+
+	#creating command
+	create_dir_cmd = 'mv ' + abs_path + ' ' + desti_path
+
+	#creating dir
+	out = sp.run([create_dir_cmd],shell=True,stdout=sp.PIPE,stderr=sp.PIPE)
+	if out.returncode == 0 :
+		print(out.stdout.decode())
+		tts.convert_text_n_speak("Directory Renamed Successfully")
+	else :
+		tts.convert_text_n_speak("Unable to rename directory. Please try again later")
+	sleep(10)
+
+def copy_dir(filtered_query) :
+	abs_path = get_dir_path(filtered_query)
+	
+	#checking directory exists or not
+	if not os.path.isdir(abs_path) :
+		tts.convert_text_n_speak("Please Check Directory Does Not Exists")
+		return
+
+	#creating command
+	create_dir_cmd = 'mv ' + abs_path + desti_path
+	#creating dir
+	out = sp.run([create_dir_cmd],shell=True,stdout=sp.PIPE,stderr=sp.PIPE)
+	if out.returncode == 0 :
+		print(out.stdout.decode())
+		tts.convert_text_n_speak("Directory Content Listed")
+	else :
+		tts.convert_text_n_speak("Unable to list directory content. Please try again later")
+	sleep(10)
+
+
 def execute_directory_query(filtered_query) :
 
 	if len(filtered_query) < 2 :
-		tts.convert_text_n_speak("Sorry your query is incomplete please check")
+		tts.convert_text_n_speak("Sorry your query is incomplete. please check")
 		return
 	#create a directory
 	elif "create" in filtered_query  or "make" in filtered_query :
 		create_dir(filtered_query)
 
-	#create a directory
+	#remove a directory
 	elif "remove" in filtered_query or "delete" in filtered_query :
 		remove_dir(filtered_query)
-		
+
+	#list content of a directory
+	elif "list" in filtered_query or "list all" in filtered_query :
+		listall_dir(filtered_query)
+
+	#list content of a directory
+	elif "rename" in filtered_query:
+		rename_dir(filtered_query)
+
+	#list content of a directory
+	elif "copy" in filtered_query:
+		pass
+		# copy_dir(filtered_query)
+
 	else :
-		tts.convert_text_n_speak("Sorry your query is incomplete please check")
+		tts.convert_text_n_speak("Sorry your query is incomplete. please check")
 		return
 
 query = input("Directory query : ")
