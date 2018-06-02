@@ -30,10 +30,28 @@ def path(files,folders):
 	rel_path1 = files[0]
 	source_path = os.path.join(script_dir1,rel_path1)
 
+	#checking path validity
+	if source_path == "/" :
+		tts.convert_text_n_speak("Sorry but Path is invalid")
+
+	#checking file path exists or not
+
+	elif os.path.exists(source_path) :
+		pass
+
 	script_dir2 = os.path.dirname(folders[1])
 	rel_path2 = files[0]
 	dest_path = os.path.join(script_dir2,rel_path2)
 
+	#checking path validity
+	if dest_path == "/" :
+		tts.convert_text_n_speak("Sorry but Path is invalid")
+
+	#checking file path exists or not
+
+	elif os.path.exists(dest_path) :
+		pass
+	
 	# call copy function
 	copy_file(source_path,dest_path)
 
@@ -104,7 +122,7 @@ def call_copy(list_text):
 				elif source[index1-1]=="current":
 					current = 1
 					del i
-				else :
+				elif source[index1-1]!="home" and source[index1-1]!="current" and i!=source[-1]:
 					folder1 = source[index1+1]+"/"+folder1
 					source.remove(i)			
 
@@ -135,7 +153,7 @@ def call_copy(list_text):
 				elif dest[index1-1]=="current":
 					current = 1
 					del i
-				else :
+				elif dest[index1-1]!="home" and dest[index1-1]!="current" and i!=dest[-1]:
 					folder2 = dest[index1+1]+"/"+folder2
 					#dest.remove(i)
 					del i			
