@@ -11,6 +11,7 @@ import file_operations as fo
 import execute_commands as ec
 import google_search as gs
 import directory_op as do
+import service as se
 
 # program exit keywords
 exit_keyword = ['quit','exit','cancel','close']
@@ -56,8 +57,8 @@ def filter_query_trigger(user_query) :
 		im.execute_install_query(filtered_query)
 
 	elif "service" in filtered_query :
-		pass
-		# execute_system_query(filtered_query)
+		se.Service(filtered_query)
+
 	elif "youtube" in filtered_query or "play" in filtered_query or "video" in filtered_query:
 		yp.play_youtube(filtered_query)
 	# search the words on google
@@ -72,5 +73,4 @@ def filter_query_trigger(user_query) :
 		ec.execute_commands(filtered_query)
 
 #calling function to start code
-
 process_user_query()
